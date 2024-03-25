@@ -20,7 +20,6 @@
 	<?php do_action( 'et_head_meta' ); ?>
 
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
-
 	<?php $template_directory_uri = get_template_directory_uri(); ?>
 	<!--[if lt IE 9]>
 	<script src="<?php echo esc_url( $template_directory_uri . '/js/html5.js"' ); ?>" type="text/javascript"></script>
@@ -29,7 +28,6 @@
 	<script type="text/javascript">
 		document.documentElement.className = 'js';
 	</script>
-
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -41,9 +39,9 @@
 
 	$et_secondary_nav_items = et_divi_get_top_nav_items();
 
-	$et_phone_number = $et_secondary_nav_items->phone_number;
+//	$et_phone_number = $et_secondary_nav_items->phone_number;
 
-	$et_email = $et_secondary_nav_items->email;
+//	$et_email = $et_secondary_nav_items->email;
 
 	$et_contact_info_defined = $et_secondary_nav_items->contact_info_defined;
 
@@ -109,7 +107,7 @@
 			</div> <!-- .container -->
 		</div> <!-- #top-header -->
 	<?php endif; // true ==== $et_top_info_defined ?>
-
+	
 		<header id="main-header" data-height-onload="<?php echo esc_attr( et_get_option( 'menu_height', '66' ) ); ?>">
 			<div class="container clearfix et_menu_container">
 			<?php
@@ -150,11 +148,13 @@
 					</nav>
 
 					<?php
+/*
 					if ( ! $et_top_info_defined ) {
 						et_show_cart_total( array(
 							'no_text' => true,
 						) );
 					}
+*/
 					?>
 
 					<?php if ( false !== et_get_option( 'show_search_icon', true ) || is_customize_preview() ) : ?>

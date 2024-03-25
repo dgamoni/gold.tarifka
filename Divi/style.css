@@ -14357,6 +14357,7 @@ p.et_pb_title_meta_container {
 .ajaxmessage {
 	display: none;
 	color: green;
+	max-width: 259px;
 }
 #ajax-contact-form input {
     height: 40px !important;
@@ -14397,4 +14398,21 @@ p.et_pb_title_meta_container {
 }
 .ajax-contact-field {
 	padding-top: 10px;
+}
+.aj_loader {
+	background: url("images/loader.gif") no-repeat;
+	position: absolute;
+    /*display: none; */
+    width: 140px;
+    height: 140px;
+   /* top: 10%;*/
+    top: 40%;
+    position: fixed;
+    left: 54%;
+    opacity: 0;
+}
+body {
+  position: relative;
+  margin-left: 15px;
+  background-color: #eee;
 }

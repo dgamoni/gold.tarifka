@@ -9,6 +9,15 @@ function et_widgets_init() {
 		'after_title' => '</h4>',
 	) );
 
+	// register_sidebar( array(
+	// 	'name' => __( 'Home Sidebar', 'Divi' ),
+	// 	'id' => 'sidebar-home',
+	// 	'before_widget' => '<div id="%1$s" class="et_pb_widget %2$s">',
+	// 	'after_widget' => '</div> <!-- end .et_pb_widget -->',
+	// 	'before_title' => '<h4 class="widgettitle">',
+	// 	'after_title' => '</h4>',
+	// ) );
+
 	register_sidebar( array(
 		'name' => __( 'Footer Area', 'Divi' ) . ' #1',
 		'id' => 'sidebar-2',

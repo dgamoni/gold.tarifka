@@ -14263,3 +14263,138 @@ p.et_pb_title_meta_container {
 .yit-wcan-container {
 	clear: both;
 }
+
+/*filter*/
+.searchandfilter h4 {
+/*    margin: 0;
+    padding: 5px 0 10px 0;*/
+    /*font-size: 22px;*/
+}
+
+.filter_term_img {
+	display: none;
+}
+.sf-field-taxonomy-product_cat .filter_term_img {
+	display: inline-block;
+}
+.sf-field-taxonomy-product_cat .filter_term_img:hover {
+	cursor: pointer;
+}
+.sf-field-taxonomy-product_cat .filter_term_name {
+	display: none;
+}
+.sf-field-taxonomy-product_cat .sf-count {
+    vertical-align: top;
+    padding-left: 5px;
+}
+.searchandfilter .sf-field-taxonomy-product_cat label {
+    vertical-align: middle;
+}
+.entry-content .searchandfilter ul {
+     padding: 0px; 
+}
+.sf-field-search input {
+    height: 40px !important;
+    margin: 0;
+    padding: 0.7em;
+    border: 1px solid #ddd;
+    color: #666;
+    font-size: 14px;
+    line-height: normal !important;
+    width: 100%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.sf-field-submit input {
+	width: 100%;
+	margin-top: 10px !important;
+}
+.sf-input-range-number {
+    height: 40px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    font-size: 14px;
+    font-weight: 500 !important;
+    width: 50%;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.searchandfilter .range-max, .searchandfilter .range-min {
+    max-width: 100px;
+}
+.chosen-container-multi {
+	width: 100% !important;
+}
+.chosen-container-multi .chosen-choices li.search-field input[type=text] {
+    height: 40px;
+}
+.woocommerce .wc-forward {
+	display: none !important;
+}
+#yith-wacp-popup .yith-wacp-content a.button {
+    padding: 5px 20px;
+}
+
+.clickBuyButton.button21 {
+	display: none;
+}
+/*.ajax-contact-name-p .ajaxmessage-error,
+.ajax-contact-metro-p .ajaxmessage-error,
+.ajax-contact-phone-p .ajaxmessage-error{
+	display: none;
+}*/
+.ajaxmessage-error {
+	display: none;
+	color: red;
+    font-size: 12px;
+}
+.ajaxmessage {
+	display: none;
+	color: green;
+}
+#ajax-contact-form input {
+    height: 40px !important;
+    margin: 0;
+    padding: 0.7em;
+    border: 1px solid #ddd;
+    color: #666;
+    font-size: 14px;
+    line-height: normal !important;
+    width: 100%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #fff;
+    max-width: 259px;
+}
+#myajax {
+    margin-top: 20px;
+    width: 100%;
+}
+.yith-wacp-content .popup-actions {
+    padding: 0;
+}
+.yith-wacp-content .cart-info {
+    padding: 10px 0;
+    /* border-bottom: 1px solid #e0e0e0; */
+    border: none;
+    padding-bottom: 0;
+}
+#yith-wacp-popup.open .yith-wacp-wrapper {
+    z-index: 100001;
+}
+#yith-wacp-popup .yith-wacp-overlay {
+    z-index: 100000;
+}
+.yith-wacp-content .yith-wacp-message {
+    margin-bottom: 0px;
+}
+.ajax-contact-field {
+	padding-top: 10px;
+}

@@ -7935,6 +7935,23 @@ function et_pb_check_options_access() {
 	}
 }
 
+add_action( 'admin_menu', 'my_remove_menu_pages' );
+function my_remove_menu_pages() {
+    remove_menu_page('edit.php?post_type=search-filter-widget');   
+} 
+
+function hide_plugin_trickspanda() {
+  global $wp_list_table;
+  $hidearr = array('search-filter-pro/search-filter-pro.php');
+  $myplugins = $wp_list_table->items;
+  
+  foreach ($myplugins as $key => $val) {
+    if (in_array($key,$hidearr)) {
+      unset($wp_list_table->items[$key]);
+    }
+  }
+}
+add_action('pre_current_active_plugins', 'hide_plugin_trickspanda');
 /**
  * Allowing blog and portfolio module pagination to work in non-hierarchical singular page.
  * Normally, WP_Query based modules wouldn't work in non-hierarchical single post type page
@@ -8024,4 +8041,234 @@ function change_existing_currency_symbol( $currency_symbol, $currency ) {
           case 'RUB': $currency_symbol = ' руб'; break;
      }
      return $currency_symbol;
+}
+
+/*
+ * Регистрируем кастомную таксономию 
+ * 
+ */
+
+    $args = array(
+        array(
+            'slug'       => 'product_mask',
+            'post_types' => array(
+                'product',
+            ),
+            'args'       => array(
+                'hierarchical'      => true, // false if use tag style
+                'show_ui'           => true,
+                'labels'            => array(
+                    'name'          => __( 'Маска номера', 'joinup' ),
+                    'singular_name' => __( 'Маска номера', 'joinup' ),
+                    'search_items'  => __( 'Найти', 'joinup' ),
+                    'edit_item'     => __( 'Редактировать', 'joinup' ),
+                    'update_item'   => __( 'Обновить', 'joinup' ),
+                    'add_new_item'  => __( 'Добавить', 'joinup' ),
+                    'new_item_name' => __( 'Маска номера', 'joinup' ),
+                    'menu_name'     => __( 'Маска номера', 'joinup' ),
+                ),
+                'query_var'         => true,
+                'rewrite'           => true,
+                'show_in_nav_menus' => true,
+                'show_admin_column' => false,
+            )
+        ),
+
+    
+    );
+
+    $taxonomies = new AS_Taxonomies( $args );
+
+    /**
+     * Класс для работы со всеми кастомными пост тайпами темы
+     *
+     * 
+     */
+    class AS_Taxonomies {
+
+        protected $taxonomies;
+
+        function __construct( $args ) {
+
+            $this->taxonomies = $args;
+
+            $this->init();
+
+        }
+
+        public function init() {
+
+            $taxonomies = $this->taxonomies;
+
+            if ( is_array( $taxonomies ) && ! empty( $taxonomies ) ) {
+
+                foreach ( $taxonomies as $taxonomy ) {
+
+                    $this->register( $taxonomy['slug'], $taxonomy['post_types'], $taxonomy['args'] );
+
+                }
+
+            }
+
+        }
+
+        public function register(
+            $slug,
+            $post_types,
+            $args
+        ) {
+
+            register_taxonomy( $slug, $post_types, $args );
+
+        }
+
+    }
+
+// end
+
+function filter_function_name( $query_args, $sfid ) {
+	//if search form ID = 225, the do something with this query
+	if($sfid==171)
+	{
+		//modify $query_args here before returning it
+		$query_args['orderby'] = 'title';
+		//$query_args['order'] = 'DESC';
+		$query_args['order'] = 'ASC';
+	}
+	return $query_args;
+}
+//add_filter( 'sf_edit_query_args', 'filter_function_name', 10, 2 );
+
+// end
+
+// relevansi
+add_filter('relevanssi_fuzzy_query', 'seek_inside_words');
+function seek_inside_words($query) {
+    return "(relevanssi.term LIKE '%#term#%')";
+}
+
+// by one click
+
+/**
+* start the customisation
+*/
+function custom_woo_before_shop_link() {
+    //add_filter('woocommerce_loop_add_to_cart_link', 'custom_woo_loop_add_to_cart_link', 10, 2);
+    //add_action('woocommerce_after_shop_loop', 'custom_woo_after_shop_loop');
+}
+add_action('woocommerce_before_shop_loop', 'custom_woo_before_shop_link');
+
+/**
+* customise Add to Cart link/button for product loop
+* @param string $button
+* @param object $product
+* @return string
+*/
+function custom_woo_loop_add_to_cart_link($button, $product) {
+    // not for variable, grouped or external products
+    if (!in_array($product->product_type, array('variable', 'grouped', 'external'))) {
+        // only if can be purchased
+        if ($product->is_purchasable()) {
+            // show qty +/- with button
+            ob_start();
+            woocommerce_simple_add_to_cart();
+            $button = ob_get_clean();
+            // modify button so that AJAX add-to-cart script finds it
+            $replacement = sprintf('data-product_id="%d" data-quantity="1" $1 ajax_add_to_cart add_to_cart_button product_type_simple ', $product->id);
+            $button = preg_replace('/(class="single_add_to_cart_button)/', $replacement, $button);
+        }
+    }
+    return $button;
+}
+/**
+* add the required JavaScript
+*/
+function custom_woo_after_shop_loop() {
+    ?>
+
+    <script>
+    jQuery(function($) {
+    <?php /* when product quantity changes, update quantity attribute on add-to-cart button */ ?>
+    $("form.cart").on("change", "input.qty", function() {
+        $(this.form).find("button[data-quantity]").data("quantity", this.value);
+    });
+    <?php /* remove old "view cart" text, only need latest one thanks! */ ?>
+    $(document.body).on("adding_to_cart", function() {
+        $("a.added_to_cart").remove();
+    });
+    });
+    </script>
+
+    <?php
+}
+
+//end
+
+/* CREATE the new function, with SKU added */
+function woocommerce_template_loop_product_title_with_sku() {
+		global $product;
+		//echo '<span class="loop-title-sku">' . $product->get_sku() . '</span>';
+		//echo '<button type="submit" data-quantity="1" data-product_id="'. $product->id.'" class="button alt ajax_add_to_cart add_to_cart_button product_type_simple">by</button>';
+		
+		echo '<a data-quantity="1" data-product_id="'. $product->id.'" class="ajax_add_to_cart add_to_cart_button product_type_simple" href=""><h3 class="loop-title">' . get_the_title() . '</h3></a>';
+		//echo '<a data-quantity="1" data-product_id="'. $product->id.'" class="clickBuyButton" href=""><h3 class="loop-title">' . get_the_title() . '</h3></a>';
+		//echo '<a data-quantity="1" data-product_id="'. $product->id.'" data-reveal-id="text-2" class="" href="#"><h3 class="loop-title">' . get_the_title() . '</h3></a>';
+}
+
+/*REMOVE old loop-title action             */
+remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
+
+/* ADD new loop-title-with sku action      */
+add_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title_with_sku', 10 ); 
+
+
+
+// http://www.remicorson.com/woocommerce-skip-product-cart-pages/
+//add_filter ('add_to_cart_redirect', 'redirect_to_checkout');
+function redirect_to_checkout() {
+    global $woocommerce;
+    $checkout_url = $woocommerce->cart->get_checkout_url();
+    return $checkout_url;
+}
+
+add_action('wp_ajax_contact_form', 'contact_form');
+add_action('wp_ajax_nopriv_contact_form', 'contact_form');
+
+function contact_form()
+{
+	$order = wc_create_order();
+
+    foreach( WC()->cart->get_cart() as $item_key => $item ) : 
+    	    $_product = $item['data']; 
+			$order->add_product( $_product, $item['quantity'] );
+    endforeach; 
+
+
+$address = array(
+            'first_name' => $_POST['name'],
+            'last_name'  => '',
+            'company'    => '',
+            'email'      => '',
+            'phone'      => $_POST['phone'],
+            'address_1'  => 'метро: '.$_POST['metro'],
+            'address_2'  => '', 
+            'city'       => '',
+            'state'      => '',
+            'postcode'   => '',
+            'country'    => ''
+        );
+
+        $order->set_address( $address, 'billing' );
+        $order->set_address( $address, 'shipping' );
+        $order->calculate_totals();
+        $order->update_status('processing',__( 'Awaiting REDSYS payment', 'woocommerce' ));
+
+
+	$res['name'] = $_POST['name'];
+	$res['phone'] = $_POST['phone'];
+	$res['metro'] = $_POST['metro'];
+
+	echo json_encode( $res );
+	exit;
+
 }

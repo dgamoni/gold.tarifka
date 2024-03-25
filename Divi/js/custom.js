@@ -640,7 +640,8 @@
 			}
 		} );
 
-		$( 'a[href*=#]:not([href=#])' ).click( function() {
+		// $( 'a[href*=#]:not([href=#])' ).click( function() {
+		   $( 'a[href*="#"]:not([href="#"])' ).click( function() {
 			var $this_link = $( this ),
 				disable_scroll = ( $this_link.closest( '.woocommerce-tabs' ).length && $this_link.closest( '.tabs' ).length ) || $this_link.closest( '.eab-shortcode_calendar-navigation-link' ).length;
 
@@ -899,3 +900,5 @@
 		}
 	}
 })(jQuery)
+
+
